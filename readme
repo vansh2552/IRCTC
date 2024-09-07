@@ -1,0 +1,65 @@
+
+# Railway Management System
+## Overview
+This Railway Management System is a Node.js application using PostgreSQL to manage train schedules, seat availability, and bookings. The system includes role-based access control for admin and regular users, with endpoints for user registration, login, train management, seat booking, and booking details. 
+
+## Prerequisites 
+- NodeJs
+- PostgreSQL
+- npm
+
+## Folder structure
+- Controllers : Contains request handlers for different routes.
+- Middlewares : Contains middleware functions for authentication and role checking.
+- Models: Contains database interaction logic.
+- Routes: Defines API endpoints and attaches them to the appropriate controllers.
+- config: Configuration files, including database connection settings.
+- index.js : Entry point of the application.
+- .env: Consists of all the secured environment variables
+
+## Setup and installation 
+1. Clone the repositary 
+- git clone https://github.com/vansh2552/IRCTC.git
+- cd IRCTC
+2. Setup database
+- CREATE DATABASE railway_management_system;
+- Create trains table
+- command : CREATE TABLE trains (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  source VARCHAR(100) NOT NULL,
+  destination VARCHAR(100) NOT NULL,
+  total_seats INTEGER NOT NULL,
+  available_seats INTEGER NOT NULL
+);
+
+- Create users table
+- command : 
+    CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(20) CHECK (role IN ('admin', 'user')) NOT NULL
+    );
+
+- Create bookings table
+- command : 
+    CREATE TABLE bookings (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    train_id INTEGER REFERENCES trains(id),
+    number_of_tickets INTEGER NOT NULL,
+    status VARCHAR(20) CHECK (status IN ('confirmed', 'canceled')) NOT NULL,
+    booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+3. Update the .env file with your database URL and API key.
+4. Start the application: npm start
+
+## API endpoints
+
+### User registration
+- Endpoint: POST /auth/register
+- Description: Register a new user.
+
+
